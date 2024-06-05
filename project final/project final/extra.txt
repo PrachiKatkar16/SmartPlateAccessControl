@@ -1,0 +1,665 @@
+""" import streamlit as st
+from pygame import mixer
+
+def main():
+    st.title("Audio Player")
+
+    # Load the audio file
+    audio_file_path = "C:\\Users\\DELL\\OneDrive\\Desktop\\Smart-Plate-Access-Control\\SPAC\\Siren.mpeg"
+
+    # Initialize pygame mixer
+    mixer.init()
+
+    # Function to play the audio
+    def play_audio():
+        mixer.music.load(audio_file_path)
+        mixer.music.play(-1)  # -1 means loop indefinitely
+
+    # Function to stop the audio
+    def stop_audio():
+        mixer.music.stop()
+
+    # Input box for user input
+    user_input = st.text_input("Enter a license plate number:")
+    if user_input == "MH16CZ7892":
+        st.write("HELLO ;)")
+    elif user_input:
+        play_audio()
+        stop_button = st.button("Stop Audio")
+        if stop_button:
+            stop_audio()
+
+if __name__ == "__main__":
+    main()
+ """
+
+""" import streamlit as st
+import cv2
+import time
+
+def main():
+    st.title("Webcam Interface")
+
+    # Initialize webcam
+    video_capture = cv2.VideoCapture(0)
+
+    # Check if the webcam is opened successfully
+    if not video_capture.isOpened():
+        st.error("Unable to open the webcam. Please check your webcam connection.")
+        return
+
+    # Set up the OpenCV window
+    video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+    # Display the webcam feed
+    st.write("Webcam Feed")
+    frame_container = st.empty()
+    timer_text = st.empty()
+
+    # Initialize timer
+    timer_seconds = 10
+    start_time = time.time()
+
+    while time.time() - start_time < timer_seconds:
+        # Read frame from the webcam
+        ret, frame = video_capture.read()
+        if not ret:
+            st.error("Failed to capture frame from the webcam.")
+            break
+
+        # Display the frame
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_container.image(frame, channels="RGB")
+
+        # Update timer
+        remaining_time = int(timer_seconds - (time.time() - start_time))
+        timer_text.text(f"Time remaining: {remaining_time} seconds")
+
+    # Capture picture automatically
+    ret, frame = video_capture.read()
+    if ret:
+        cv2.imwrite("captured_image.jpg", frame)
+        st.success("Image captured successfully!")
+    else:
+        st.error("Failed to capture image from the webcam.")
+
+    # Release the webcammm
+    video_capture.release()
+
+if __name__ == "__main__":
+    main() """
+
+#code to play and pause the siren:
+You can create a Streamlit app with a button to play the audio and another button to stop the audio. Here's how you can implement it:
+
+```python
+import streamlit as st
+from pygame import mixer
+
+def main():
+    st.title("Siren Controller")
+
+    # Load the audio file
+    audio_file_path = "C:\\Users\\DELL\\OneDrive\\Desktop\\Smart-Plate-Access-Control\\SPAC\\Siren.mpeg"
+
+    # Initialize pygame mixer
+    mixer.init()
+
+    # Function to play the audio
+    def play_audio():
+        mixer.music.load(audio_file_path)
+        mixer.music.play(-1)  # -1 means loop indefinitely
+
+    # Function to stop the audio
+    def stop_audio():
+        mixer.music.stop()
+
+    # Button to play the audio
+    if st.button("Play Audio"):
+        play_audio()
+
+    # Button to stop the audio
+    if st.button("Stop Audio"):
+        stop_audio()
+
+if __name__ == "__main__":
+    main()
+```
+
+This app consists of two buttons:
+1. "Play Audio": When clicked, it plays the audio file in a loop.
+2. "Stop Audio": When clicked, it stops the audio playback.
+
+
+
+
+
+MAIN 
+
+
+""" 
+#click an image automatically from ui and stores it in a specific directory and camera dosent lag at all
+import streamlit as st
+import cv2
+import time
+
+def main():
+    st.title("Webcam Interface")
+
+    # Initialize webcam
+    video_capture = cv2.VideoCapture(0)
+
+    # Check if the webcam is opened successfully
+    if not video_capture.isOpened():
+        st.error("Unable to open the webcam. Please check your webcam connection.")
+        return
+
+    # Set up the OpenCV window
+    video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+    # Display the webcam feed
+    st.write("Webcam Feed")
+    frame_container = st.empty()
+    timer_text = st.empty()
+
+    # Initialize timer
+    timer_seconds = 10
+    start_time = time.time()
+
+    while time.time() - start_time < timer_seconds:
+        # Read frame from the webcam
+        ret, frame = video_capture.read()
+        if not ret:
+            st.error("Failed to capture frame from the webcam.")
+            break
+
+        # Display the frame
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_container.image(frame, channels="RGB")
+
+        # Update timer
+        remaining_time = int(timer_seconds - (time.time() - start_time))
+        timer_text.text(f"Time remaining: {remaining_time} seconds")
+
+    # Capture picture automatically
+    ret, frame = video_capture.read()
+    if ret:
+        file_path = "C:\\Users\\DELL\\OneDrive\\Desktop\\project final\\captured.jpg"
+        cv2.imwrite(file_path, frame)
+        st.success("Image captured successfully!")
+        st.image(file_path)
+    else:
+        st.error("Failed to capture image from the webcam.")
+
+    # Release the webcam
+    video_capture.release()
+
+if __name__ == "__main__":
+    main()
+
+
+ """
+""" 
+#Number plate detection successfull:
+import streamlit as st
+import cv2
+import time
+import easyocr
+
+def main():
+    st.title("Webcam Interface")
+
+    # Initialize webcam
+    video_capture = cv2.VideoCapture(0)
+
+    # Check if the webcam is opened successfully
+    if not video_capture.isOpened():
+        st.error("Unable to open the webcam. Please check your webcam connection.")
+        return
+
+    # Set up the OpenCV window
+    video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+    # Display the webcam feed
+    st.write("Webcam Feed")
+    frame_container = st.empty()
+    timer_text = st.empty()
+
+    # Initialize timer
+    timer_seconds = 10
+    start_time = time.time()
+
+    while time.time() - start_time < timer_seconds:
+        # Read frame from the webcam
+        ret, frame = video_capture.read()
+        if not ret:
+            st.error("Failed to capture frame from the webcam.")
+            break
+
+        # Display the frame
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_container.image(frame, channels="RGB")
+
+        # Update timer
+        remaining_time = int(timer_seconds - (time.time() - start_time))
+        timer_text.text(f"Time remaining: {remaining_time} seconds")
+
+    # Capture picture automatically
+    ret, frame = video_capture.read()
+    if ret:
+        file_path = "captured.jpg"
+        cv2.imwrite(file_path, frame)
+        st.success("Image captured successfully!")
+        st.image(file_path)
+
+        # Perform number plate recognition
+        reader = easyocr.Reader(['en'])
+        result = reader.readtext(file_path)
+
+        # Extract detected number plate text
+        detected_number = ""
+        for detection in result:
+            text = detection[1].replace(" ", "").replace("-", "")  # Remove spaces and hyphens
+            detected_number += text
+
+        # Check if number plate is found and authorized
+        authorized = detected_number == "MH16CZ7892"
+        st.write(f"Detected Number Plate: {detected_number}")
+
+        if authorized:
+            st.success("Authorized Person")
+        else:
+            st.error("Unauthorized Person")
+
+    else:
+        st.error("Failed to capture image from the webcam.")
+
+    # Release the webcam
+    video_capture.release()
+
+if __name__ == "__main__":
+    main() """
+
+
+
+#facial recognition successfull
+""" import streamlit as st
+import cv2
+import time
+import face_recognition
+
+def main():
+    st.title("Webcam Interface")
+
+    # Initialize webcam
+    video_capture = cv2.VideoCapture(0)
+
+    # Check if the webcam is opened successfully
+    if not video_capture.isOpened():
+        st.error("Unable to open the webcam. Please check your webcam connection.")
+        return
+
+    # Set up the OpenCV window
+    video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+    # Load the reference image for face recognition
+    reference_image_path = "C:\\Users\\DELL\\OneDrive\\Desktop\\project final\\vinay.jpg"
+    reference_image = face_recognition.load_image_file(reference_image_path)
+    reference_encoding = face_recognition.face_encodings(reference_image)[0]
+
+    # Display the webcam feed
+    st.write("Webcam Feed")
+    frame_container = st.empty()
+    timer_text = st.empty()
+
+    # Initialize timer
+    timer_seconds = 10
+    start_time = time.time()
+
+    while time.time() - start_time < timer_seconds:
+        # Read frame from the webcam
+        ret, frame = video_capture.read()
+        if not ret:
+            st.error("Failed to capture frame from the webcam.")
+            break
+
+        # Display the frame
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_container.image(frame, channels="RGB")
+
+        # Update timer
+        remaining_time = int(timer_seconds - (time.time() - start_time))
+        timer_text.text(f"Time remaining: {remaining_time} seconds")
+
+    # Capture picture automatically
+    ret, frame = video_capture.read()
+    if ret:
+        file_path = "captured.jpg"
+        cv2.imwrite(file_path, frame)
+        st.success("Image captured successfully!")
+        st.image(file_path)
+
+        # Perform face recognition
+        captured_image = face_recognition.load_image_file(file_path)
+        captured_encoding = face_recognition.face_encodings(captured_image)[0]
+
+        # Compare the captured face with the reference face
+        results = face_recognition.compare_faces([reference_encoding], captured_encoding)
+        if results[0]:
+            st.success("Face recognized: Authorized Person")
+        else:
+            st.error("Face not recognized: Unauthorized Person")
+
+    else:
+        st.error("Failed to capture image from the webcam.")
+
+    # Release the webcam
+    video_capture.release()
+
+if __name__ == "__main__":
+    main()
+
+ """
+
+""" #Integration of number plate and facial recognition
+import streamlit as st
+import cv2
+import time
+import easyocr
+import face_recognition
+
+def main():
+    st.title("Webcam Interface")
+
+    # Initialize webcam
+    video_capture = cv2.VideoCapture(0)
+
+    # Check if the webcam is opened successfully
+    if not video_capture.isOpened():
+        st.error("Unable to open the webcam. Please check your webcam connection.")
+        return
+
+    # Set up the OpenCV window
+    video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+    # Load the reference image for facial recognition
+    reference_image_path = "C:\\Users\\DELL\\OneDrive\\Desktop\\project final\\vinay.jpg"
+    reference_image = face_recognition.load_image_file(reference_image_path)
+    reference_encoding = face_recognition.face_encodings(reference_image)[0]
+
+    # Display the webcam feed
+    st.write("Webcam Feed")
+    frame_container = st.empty()
+    timer_text = st.empty()
+
+    # Initialize timer
+    timer_seconds = 10
+    start_time = time.time()
+
+    while time.time() - start_time < timer_seconds:
+        # Read frame from the webcam
+        ret, frame = video_capture.read()
+        if not ret:
+            st.error("Failed to capture frame from the webcam.")
+            break
+
+        # Display the frame
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_container.image(frame, channels="RGB")
+
+        # Update timer
+        remaining_time = int(timer_seconds - (time.time() - start_time))
+        timer_text.text(f"Time remaining: {remaining_time} seconds")
+
+    # Capture picture automatically
+    ret, frame = video_capture.read()
+    if ret:
+        file_path = "captured.jpg"
+        cv2.imwrite(file_path, frame)
+        st.success("Image captured successfully!")
+        st.image(file_path)
+
+        # Perform number plate recognition
+        reader = easyocr.Reader(['en'])
+        result = reader.readtext(file_path)
+
+        # Extract detected number plate text
+        detected_number = ""
+        for detection in result:
+            text = detection[1].replace(" ", "").replace("-", "")  # Remove spaces and hyphens
+            detected_number += text
+
+        # Check if number plate is found and authorized
+        number_plate_authorized = detected_number == "MH16CZ7892"
+        st.write(f"Detected Number Plate: {detected_number}")
+
+        # Perform facial recognition
+        captured_image = face_recognition.load_image_file(file_path)
+        captured_encoding = face_recognition.face_encodings(captured_image)
+        
+        if len(captured_encoding) > 0:
+            captured_encoding = captured_encoding[0]
+            # Compare the captured face with the reference face
+            facial_recognition_results = face_recognition.compare_faces([reference_encoding], captured_encoding)
+            facial_recognition_authorized = facial_recognition_results[0]
+            st.write("Facial Recognition: ", "Authorized" if facial_recognition_authorized else "Unauthorized")
+        else:
+            facial_recognition_authorized = False
+
+        # Check if both number plate and facial recognition are authorized
+        if number_plate_authorized and facial_recognition_authorized:
+            st.success("Authorized Person")
+        else:
+            st.error("Unauthorized Person")
+
+    else:
+        st.error("Failed to capture image from the webcam.")
+
+    # Release the webcam
+    video_capture.release()
+
+if __name__ == "__main__":
+    main()
+ """
+
+""" #Siren integration :
+import streamlit as st
+import cv2
+import time
+import face_recognition
+import subprocess
+
+def main():
+    st.title("Access Control System")
+
+    # Load the reference image for facial recognition
+    reference_image_path = "C:\\Users\\DELL\\OneDrive\\Desktop\\project final\\janhavi.jpeg"
+    reference_image = face_recognition.load_image_file(reference_image_path)
+    reference_encoding = face_recognition.face_encodings(reference_image)[0]
+
+    # Initialize webcam
+    video_capture = cv2.VideoCapture(0)
+
+    # Check if the webcam is opened successfully
+    if not video_capture.isOpened():
+        st.error("Unable to open the webcam. Please check your webcam connection.")
+        return
+
+    # Set up the OpenCV window
+    video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+    # Display the webcam feed
+    st.write("Webcam Feed")
+    frame_container = st.empty()
+    timer_text = st.empty()
+
+    # Initialize timer
+    timer_seconds = 10
+    start_time = time.time()
+
+    while time.time() - start_time < timer_seconds:
+        # Read frame from the webcam
+        ret, frame = video_capture.read()
+        if not ret:
+            st.error("Failed to capture frame from the webcam.")
+            break
+
+        # Display the frame
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_container.image(frame, channels="RGB")
+
+        # Update timer
+        remaining_time = int(timer_seconds - (time.time() - start_time))
+        timer_text.text(f"Time remaining: {remaining_time} seconds")
+
+    # Capture picture automatically
+    ret, frame = video_capture.read()
+    if ret:
+        file_path = "captured.jpg"
+        cv2.imwrite(file_path, frame)
+        st.success("Image captured successfully!")
+        st.image(file_path)
+
+        # Perform face recognition
+        captured_image = face_recognition.load_image_file(file_path)
+        captured_encoding = face_recognition.face_encodings(captured_image)
+        
+        if len(captured_encoding) > 0:
+            captured_encoding = captured_encoding[0]
+            # Compare the captured face with the reference face
+            facial_recognition_results = face_recognition.compare_faces([reference_encoding], captured_encoding)
+            facial_recognition_authorized = facial_recognition_results[0]
+            st.write("Facial Recognition: ", "Authorized" if facial_recognition_authorized else "Unauthorized")
+        else:
+            facial_recognition_authorized = False
+
+        # Check if authorized
+        if facial_recognition_authorized:
+            st.success("Authorized Person")
+        else:
+            st.error("Unauthorized Person")
+            # Play the siren using subprocess to avoid restarting the Streamlit app
+            subprocess.Popen(["streamlit", "run", "play_siren.py"])
+
+    else:
+        st.error("Failed to capture image from the webcam.")
+
+    # Release the webcam
+    video_capture.release()
+
+if __name__ == "__main__":
+    main()
+ """
+
+""" #facial+number+siren+killswitch
+import streamlit as st
+import cv2
+import time
+import easyocr
+import face_recognition
+import subprocess
+
+def main():
+    st.title("Access Control System")
+
+    # Load the reference image for facial recognition
+    #reference_image_path = "C:\\Users\\DELL\\OneDrive\\Desktop\\project final\\janhavi.jpeg"
+    reference_image_path = "C:\\Users\\DELL\\OneDrive\\Desktop\\project final\\vinay.jpg"
+    reference_image = face_recognition.load_image_file(reference_image_path)
+    reference_encoding = face_recognition.face_encodings(reference_image)[0]
+
+    # Initialize webcam
+    video_capture = cv2.VideoCapture(0)
+
+    # Check if the webcam is opened successfully
+    if not video_capture.isOpened():
+        st.error("Unable to open the webcam. Please check your webcam connection.")
+        return
+
+    # Set up the OpenCV window
+    video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+    # Display the webcam feed
+    st.write("Webcam Feed")
+    frame_container = st.empty()
+    timer_text = st.empty()
+
+    # Initialize timer
+    timer_seconds = 10
+    start_time = time.time()
+
+    while time.time() - start_time < timer_seconds:
+        # Read frame from the webcam
+        ret, frame = video_capture.read()
+        if not ret:
+            st.error("Failed to capture frame from the webcam.")
+            break
+
+        # Display the frame
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_container.image(frame, channels="RGB")
+
+        # Update timer
+        remaining_time = int(timer_seconds - (time.time() - start_time))
+        timer_text.text(f"Time remaining: {remaining_time} seconds")
+
+    # Capture picture automatically
+    ret, frame = video_capture.read()
+    if ret:
+        file_path = "captured.jpg"
+        cv2.imwrite(file_path, frame)
+        st.success("Image captured successfully!")
+        st.image(file_path)
+
+        # Perform face recognition
+        captured_image = face_recognition.load_image_file(file_path)
+        captured_encoding = face_recognition.face_encodings(captured_image)
+        
+        if len(captured_encoding) > 0:
+            captured_encoding = captured_encoding[0]
+            # Compare the captured face with the reference face
+            facial_recognition_results = face_recognition.compare_faces([reference_encoding], captured_encoding)
+            facial_recognition_authorized = facial_recognition_results[0]
+            st.write("Facial Recognition: ", "Authorized" if facial_recognition_authorized else "Unauthorized")
+        else:
+            facial_recognition_authorized = False
+
+        # Perform number plate recognition
+        reader = easyocr.Reader(['en'])
+        result = reader.readtext(file_path)
+
+        # Extract detected number plate text
+        detected_number = ""
+        for detection in result:
+            text = detection[1].replace(" ", "").replace("-", "")  # Remove spaces and hyphens
+            detected_number += text
+
+        # Check if number plate is found and authorized
+        authorized = detected_number == "MH16CZ7892"
+        st.write(f"Detected Number Plate: {detected_number}")
+
+        # Check if authorized
+        if facial_recognition_authorized and authorized:
+            st.success("Authorized Person")
+
+        else:
+            st.error("Unauthorized Person")
+            # Play the siren using subprocess to avoid restarting the Streamlit app
+            subprocess.Popen(["streamlit", "run", "play_siren.py"])
+
+    else:
+        st.error("Failed to capture image from the webcam.")
+
+    # Release the webcam
+    video_capture.release()
+
+if __name__ == "__main__":
+    main()
+ """
